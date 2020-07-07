@@ -1,0 +1,15 @@
+{
+  "name": "@vanagandr42/node-red-contrib-smarthome",
+  "version": "0.1.0",
+  "description": "Several custom nodes to control smart home devices.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vanagandr42/node-red-contrib-smarthome.git"
+  },
+  "author": "vanagandr42",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/vanagandr42/node-red-contrib-smarthome/issues"
+  },
+  "homepage": "https://github.com/vanagandr42/node-red-contrib-smarthome#readme"
+}

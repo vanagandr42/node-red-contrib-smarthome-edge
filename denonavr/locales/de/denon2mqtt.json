@@ -1,0 +1,22 @@
+{
+    "common": {
+        "label": {
+            "name": "Name"
+        }
+    },
+    "mqtt": {
+        "label": {
+            "outtopic": "Topic Präfix",
+            "messageformat": "Output Payload",
+            "messageformatvalue": {
+                "plain": "Plain",
+                "basic": "MQTT-Smarthome JSON Basic",
+                "extended": "MQTT-Smarthome JSON Extended"
+            }
+        },
+        "error": {
+            "notopicprefix": "topic prefix not configured",
+            "notopicpostfix": "topic postfix (denon command) is empty"
+        }
+    }
+}

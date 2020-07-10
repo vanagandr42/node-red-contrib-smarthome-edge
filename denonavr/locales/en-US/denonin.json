@@ -1,0 +1,37 @@
+{
+    "common": {
+        "label": {
+            "name": "Name"
+        },
+        "status": {
+            "connected": "connected",
+            "disconnected": "disconnected",
+            "connecting": "connecting"
+        }
+    },
+    "tcpin": {
+        "label": {
+            "server": "Server",
+            "port": "port",
+            "host": "host"
+        },
+        "status": {
+            "connecting": "connecting to __host__:__port__",
+            "connected": "connected to __host__:__port__"
+        },
+        "errors": {
+            "connection-lost": "connection lost to __host__:__port__"
+        }
+    },
+    "mqtt": {
+        "label": {
+            "outtopic": "Topic prefix",
+            "messageformat": "Output payload",
+            "messageformatvalue": {
+                "plain": "plain",
+                "basic": "MQTT smarthome JSON basic",
+                "extended": "MQTT smarthome JSON extended"
+            }
+        }
+    }
+}

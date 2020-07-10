@@ -1,0 +1,19 @@
+{
+    "common": {
+        "label": {
+            "name": "Name",
+            "source": "Source"
+        },
+        "error": {
+            "nosource": "source not configured"
+        }
+    },
+    "mqtt": {
+        "label": {
+            "connectedtopic": "Topic"
+        },
+        "error": {
+            "notopicconnected": "connected topic not configured"
+        }
+    }
+}

@@ -1,0 +1,37 @@
+<script type="text/javascript">
+    RED.nodes.registerType('connected', {
+        category: 'smarthome',
+        color: "#fdd0a2",
+        defaults: {
+            name: { value: "" },
+            source: { value: "" },
+            topicConnected: { value: "" }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "function.svg",
+        label: function () {
+            return this.name || "Connected";
+        },
+        labelStyle: function () {
+            return this.name ? "node_label_italic" : "";
+        },
+    });
+</script>
+
+<script type="text/html" data-template-name="connected">
+    <div class="form-row">
+        <label for="node-input-source"><i class="fa fa-tasks"></i> <span data-i18n="common.label.source"></span></label>
+        <input type="text" id="node-input-source" data-i18n="[placeholder]common.label.source">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-topicConnected"><i class="fa fa-tasks"></i> <span data-i18n="mqtt.label.connectedtopic"></span></label>
+        <input type="text" id="node-input-topicConnected" data-i18n="[placeholder]mqtt.label.connectedtopic">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="common.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]common.label.name">
+    </div>
+</script>

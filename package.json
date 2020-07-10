@@ -1,6 +1,6 @@
 {
   "name": "@vanagandr42/node-red-contrib-smarthome",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Several custom nodes to control smart home devices.",
   "repository": {
     "type": "git",

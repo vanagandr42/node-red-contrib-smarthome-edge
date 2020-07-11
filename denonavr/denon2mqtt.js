@@ -66,7 +66,7 @@ module.exports = function (RED) {
                     payload = { val: value, ts: ts, lc: lc };
                 }
 
-                var newMsg = { topic: topic, payload: payload, retain: true, qos: 0 };
+                var newMsg = { _msgid: msg._msgid, topic: topic, payload: payload, retain: true, qos: 0 };
                 if (payloadOutput === "mqsh-extended") {
                     newMsg.payload.denon = denon;
                 }

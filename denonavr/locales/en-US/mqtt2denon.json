@@ -1,0 +1,15 @@
+{
+    "common": {
+        "label": {
+            "name": "Name"
+        }
+    },
+    "mqtt": {
+        "label": {
+            "commandkeyword": "Command keyword"
+        },
+        "error": {
+            "nocommandkeyword": "message appears not to be a denon command"
+        }
+    }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@vanagandr42/node-red-contrib-smarthome",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Several custom nodes to control smart home devices.",
   "repository": {
     "type": "git",
@@ -16,7 +16,13 @@
     "nodes": {
       "connected": "common/connected.js",
       "denon in": "denonavr/denonin.js",
-      "denon mqtt": "denonavr/denon2mqtt.js"
+      "denon out": "denonavr/denonout.js",
+      "denon mqtt": "denonavr/denon2mqtt.js",
+      "mqtt denon": "denonavr/mqtt2denon.js"
     }
+  },
+  "dependencies": {
+    "querystring": "^0.2.0",
+    "request": "^2.88.0"
   }
 }

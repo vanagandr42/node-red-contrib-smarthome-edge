@@ -1,0 +1,24 @@
+{
+    "common": {
+        "label": {
+            "name": "Name"
+        },
+        "status": {
+            "requesting": "requesting",
+            "no-response": "no response from server"
+        },
+        "errors": {
+            "emptypayload": "command must not be empty"
+        }
+    },
+    "httpout": {
+        "label": {
+            "server": "Server",
+            "port": "port",
+            "host": "host"
+        },
+        "errors": {
+            "no-response": "no response from server __host__:__port__"
+        }
+    }
+}

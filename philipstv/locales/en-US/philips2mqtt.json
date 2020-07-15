@@ -1,0 +1,21 @@
+{
+    "common": {
+        "label": {
+            "name": "Name"
+        }
+    },
+    "mqtt": {
+        "label": {
+            "outtopic": "Topic prefix",
+            "messageformat": "Output payload",
+            "messageformatvalue": {
+                "plain": "plain",
+                "basic": "MQTT smarthome JSON basic",
+                "extended": "MQTT smarthome JSON extended"
+            }
+        },
+        "errors": {
+            "noresult": "message must contain a request result"
+        }
+    }
+}

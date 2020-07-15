@@ -1,0 +1,27 @@
+{
+    "common": {
+        "label": {
+            "name": "Name",
+            "username": "Benutzername",
+            "password": "Passwort"
+        },
+        "status": {
+            "no-response": "keine Antwort vom Server"
+        },
+        "errors": {
+            "notjson": "message bode must be in JSON format",
+            "invalidcommand": "command in message is invalid: __command__"
+        }
+    },
+    "httpout": {
+        "label": {
+            "server": "Server",
+            "port": "Port",
+            "host": "Host",
+            "apiv": "API-Version"
+        },
+        "errors": {
+            "no-response": "no response from server __host__:__port__"
+        }
+    }
+}

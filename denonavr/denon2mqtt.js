@@ -4,20 +4,17 @@ module.exports = function (RED) {
     function DenonAvr2Mqtt(config) {
         RED.nodes.createNode(this, config);
 
+        var payloadOutput = config.payloadOutput || "mqsh-extended";
+        var topicPrefix = config.topicOutputPrefix || "";
+        if (!topicPrefix.endsWith("/")) {
+            topicPrefix += "/";
+        }
+
         var node = this;
         var nodeContext = this.context();
 
         this.on('input', function (msg, send, done) {
             var err;
-            var payloadOutput = config.payloadOutput || "mqsh-extended";
-
-            var topicPrefix = config.topicOutputPrefix || "";
-            if (topicPrefix.length === 0) {
-                err = RED._("mqtt.error.notopicprefix");
-            }
-            if (!topicPrefix.endsWith("/")) {
-                topicPrefix += "/";
-            }
 
             var topicPostfix = msg.payload.command || "";
             if (topicPostfix.length === 0) {
@@ -54,7 +51,7 @@ module.exports = function (RED) {
                     payload = value;
                 }
                 else {
-                    var lastValue = lastPayload.val || "";
+                    var lastValue = lastPayload.val;
                     var lastLc = lastPayload.lc || ts;
                     var lc;
                     if (lastValue === value) {

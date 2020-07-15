@@ -9,12 +9,12 @@ module.exports = function (RED) {
         this.on('input', function (msg, send, done) {
             var err;
 
-            var commandKeyword = config.commandKeyword || "command";
+            var setKeyword = config.setKeyword || "set";
 
             var topic = msg.topic || "";
             var topicElements = topic.split("/").reverse();
-            if (topicElements.length < 2 || topicElements[1] !== commandKeyword) {
-                err = RED._("mqtt.error.nocommandkeyword");
+            if (topicElements.length < 2 || topicElements[1] !== setKeyword) {
+                err = RED._("mqtt.error.nosetkeyword");
             }
             var command = topicElements[0];
 

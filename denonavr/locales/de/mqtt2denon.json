@@ -6,10 +6,10 @@
     },
     "mqtt": {
         "label": {
-            "commandkeyword": "Command Schlüsselwort"
+            "setkeyword": "Set Schlüsselwort"
         },
         "error": {
-            "nocommandkeyword": "message appears not to be a denon command"
+            "nosetkeyword": "message appears not to be a denon set command"
         }
     }
 }

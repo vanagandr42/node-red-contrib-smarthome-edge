@@ -39,11 +39,11 @@ module.exports = function (RED) {
 
                 var newMsg = { topic: topicConnected, retain: true, qos: 1 };;
                 var contextFill = nodeContext.get("fill") || "";
-                if (contextFill === "green") {
-                    newMsg.payload = 2;
+                if (contextFill === "red" || contextFill === "yellow") {
+                    newMsg.payload = 1;
                 }
                 else {
-                    newMsg.payload = 1;
+                    newMsg.payload = 2;
                 }
 
                 // For maximum backwards compatibility, check that send exists.

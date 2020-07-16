@@ -72,6 +72,8 @@ module.exports = function (RED) {
                 }
             }
             else {
+                node.status({ fill: 'blue', shape: 'dot', text: 'common.status.requesting' });
+                
                 client(options)
                     .then(function (response) {
                         msg.payload.result = response.data;

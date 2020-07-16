@@ -1,5 +1,5 @@
 module.exports = function (RED) {
-    "use strict";
+    'use strict';
 
     function Connected(config) {
         RED.nodes.createNode(this, config);
@@ -8,16 +8,16 @@ module.exports = function (RED) {
         var nodeContext = this.context();
 
         this.on('input', function (msg, send, done) {
-            var err;
+            let err;
 
-            var source = config.source || "";
+            let source = config.source || '';
             if (source.length === 0) {
-                err = RED._("common.error.nosource");
+                err = RED._('common.error.nosource');
             }
 
-            var topicConnected = config.topicConnected || "";
+            let topicConnected = config.topicConnected || "";
             if (topicConnected.length === 0) {
-                err = RED._("mqtt.error.notopicconnected");
+                err = RED._('mqtt.error.notopicconnected');
             }
 
             // If an error is hit, report it to the runtime
@@ -31,14 +31,14 @@ module.exports = function (RED) {
                 }
             }
             else {
-                var msgSource = msg.status.source.type;
-                var msgStatusFill = msg.status.fill;
-                if (msgSource && msgSource === source && msgStatusFill) {
+                let msgSource = msg.status.source.type;
+                let msgStatusFill = msg.status.fill || '';
+                if (msgSource && msgSource === source && msgStatusFill !== 'blue') {
                     nodeContext.set("fill", msgStatusFill);
                 }
 
-                var newMsg = { topic: topicConnected, retain: true, qos: 1 };;
-                var contextFill = nodeContext.get("fill") || "";
+                let newMsg = { topic: topicConnected, retain: true, qos: 1 };
+                let contextFill = nodeContext.get("fill") || "";
                 if (contextFill === "red" || contextFill === "yellow") {
                     newMsg.payload = 1;
                 }

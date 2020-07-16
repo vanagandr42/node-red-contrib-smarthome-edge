@@ -1,8 +1,7 @@
 module.exports = function (RED) {
-    "use strict";
+    'use strict';
 
-    var request = require("request");
-    var querystring = require("querystring");
+    const axios = require('axios');
 
     function DenonAvrOut(config) {
         RED.nodes.createNode(this, config);
@@ -18,71 +17,64 @@ module.exports = function (RED) {
             this.reqTimeout = 120000;
         }
 
-        this.on("input", function (msg, send, done) {
-            var error;
+        this.on('input', function (msg, send, done) {
+            let err;
 
-            var command = msg.payload.command || "";
+            let command = msg.payload.command || '';
             if (command.length === 0) {
-                err = RED._("common.errors.emptypayload");
+                err = RED._('common.errors.emptypayload');
             }
-            var parameter = msg.payload.parameter || "";
+            let parameter = msg.payload.parameter || '';
 
             // If an error is hit, report it to the runtime
-            if (error) {
+            if (err) {
                 if (done) {
                     // Node-RED 1.0 compatible
-                    done(error);
+                    done(err);
                 } else {
                     // Node-RED 0.x compatible
-                    node.error(error, msg);
+                    node.error(err, msg);
                 }
             }
             else {
-                node.status({ fill: "blue", shape: "dot", text: "common.status.requesting" });
+                node.status({ fill: 'blue', shape: 'dot', text: 'common.status.requesting' });
 
-                var data;
-                if (command === "PSMODE" || command === "PSMULTEQ") {
-                    data = command + ":" + parameter;
+                let data;
+                if (command === 'PSMODE' || command === 'PSMULTEQ') {
+                    data = command + ':' + parameter;
                 }
-                else if (command.startsWith("PS") || command.startsWith("CV") || command.startsWith("SS") || command.startsWith("MVMAX")) {
-                    data = command + " " + parameter;
+                else if (command.startsWith('PS') || command.startsWith('CV') || command.startsWith('SS') || command.startsWith('MVMAX')) {
+                    data = command + ' ' + parameter;
                 }
                 else {
                     data = command + parameter;
                 }
 
-                var endpoint = "http://" + node.host + ":" + node.port + "/goform/formiPhoneAppDirect.xml";
-                var opts = {};
-                opts.url = endpoint + "?" + querystring.escape(data);
-                opts.timeout = node.reqTimeout;
-                opts.method = "GET";
-                opts.maxRedirects = 21;
-
-                request(opts, function (err, res, body) {
-                    if (err) {
-                        if (err.code === 'ETIMEDOUT' || err.code === 'ESOCKETTIMEDOUT') {
-                            err = RED._("httpout.errors.no-response", { host: node.host, port: node.port });
-                            node.status({ fill: "red", shape: "ring", text: "common.status.no-response" });
-                        } else {
-                            node.status({ fill: "red", shape: "ring", text: err.code });
-                        }
-
-                        if (done) {
-                            // Node-RED 1.0 compatible
-                            done(err);
-                        } else {
-                            // Node-RED 0.x compatible
-                            node.error(err, msg);
-                        }
-                    }
-                    else {
+                let config = { timeout: node.reqTimeout, maxRedirects: 0 };
+                axios.get(`http://${node.host}:${node.port}/goform/formiPhoneAppDirect.xml?${encodeURIComponent(data)}`, config)
+                    .then(function (response) {
                         node.status({});
 
                         if (done) {
                             done();
                         }
-                    }
-                });
+                    })
+                    .catch(function (error) {
+                        if (error.code === 'ETIMEDOUT' || error.code === 'ESOCKETTIMEDOUT' || error.code === 'ECONNABORTED' || error.message === 'Network error') {
+                            error = RED._("httpout.errors.no-response", { host: node.host, port: node.port });
+                            node.status({ fill: 'red', shape: 'ring', text: 'common.status.no-response' });
+                        } else {
+                            node.status({ fill: 'red', shape: 'ring', text: error.code });
+                        }
+
+                        if (done) {
+                            // Node-RED 1.0 compatible
+                            done(error);
+                        } else {
+                            // Node-RED 0.x compatible
+                            node.error(error, msg);
+                        }
+                    })
             }
         });
 

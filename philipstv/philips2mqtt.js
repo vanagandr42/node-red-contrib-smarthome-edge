@@ -22,7 +22,7 @@ module.exports = function (RED) {
                 err = RED._("common.errors.noresult");
             }
             let ts = msg.payload.ts || Date.now();
-            let periodical = msg.periodic || false;
+            let periodical = msg.periodical || false;
 
             let lastPayloads = nodeContext.get('lastPayloads');
             if (!lastPayloads) {

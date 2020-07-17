@@ -1,17 +1,17 @@
 {
-  "name": "@vanagandr42/node-red-contrib-smarthome",
-  "version": "0.1.5",
-  "description": "Several custom nodes to control smart home devices.",
+  "name": "@vanagandr42/node-red-contrib-smarthome-edge",
+  "version": "0.1.6",
+  "description": "Several custom nodes to integrate smart home edge devices.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vanagandr42/node-red-contrib-smarthome.git"
+    "url": "git+https://github.com/vanagandr42/node-red-contrib-smarthome-edge.git"
   },
   "author": "vanagandr42",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/vanagandr42/node-red-contrib-smarthome/issues"
+    "url": "https://github.com/vanagandr42/node-red-contrib-smarthome-edge/issues"
   },
-  "homepage": "https://github.com/vanagandr42/node-red-contrib-smarthome#readme",
+  "homepage": "https://github.com/vanagandr42/node-red-contrib-smarthome-edge#readme",
   "node-red": {
     "nodes": {
       "connected": "common/connected.js",

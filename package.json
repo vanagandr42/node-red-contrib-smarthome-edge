@@ -1,6 +1,6 @@
 {
   "name": "@vanagandr42/node-red-contrib-smarthome-edge",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Several custom nodes to integrate smart home edge devices.",
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
       "denon out": "denonavr/denonout.js",
       "denon mqtt": "denonavr/denon2mqtt.js",
       "mqtt denon": "denonavr/mqtt2denon.js",
+      "fritzhosts mqtt": "fritzbox/fritzhosts2mqtt.js",
       "philips req": "philipstv/philipsreq.js",
       "philips mqtt": "philipstv/philips2mqtt.js"
     }

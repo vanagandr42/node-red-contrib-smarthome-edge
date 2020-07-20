@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('denon mqtt', {
+    RED.nodes.registerType('fritzhosts mqtt', {
         category: 'smarthome',
         color: "#fdd0a2",
         defaults: {
@@ -11,7 +11,7 @@
         outputs: 1,
         icon: "function.svg",
         label: function () {
-            return this.name || "Denon -> MQTT";
+            return this.name || "Fritz Hosts -> MQTT";
         },
         labelStyle: function () {
             return this.name ? "node_label_italic" : "";
@@ -19,10 +19,10 @@
     });
 </script>
 
-<script type="text/html" data-template-name="denon mqtt">
+<script type="text/html" data-template-name="fritzhosts mqtt">
     <div class="form-row">
         <label for="node-input-topicOutputPrefix"><i class="fa fa-tasks"></i> <span data-i18n="mqtt.label.outtopic"></span></label>
-        <input type="text" id="node-input-topicOutputPrefix" placeholder="denon/status/">
+        <input type="text" id="node-input-topicOutputPrefix" placeholder="fritzbox/status/hosts/">
     </div>
 
     <div class="form-row">

@@ -1,6 +1,6 @@
 {
   "name": "@vanagandr42/node-red-contrib-smarthome-edge",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Several custom nodes to integrate smart home edge devices.",
   "repository": {
     "type": "git",

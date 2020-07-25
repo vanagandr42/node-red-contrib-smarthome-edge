@@ -14,14 +14,9 @@
   "homepage": "https://github.com/vanagandr42/node-red-contrib-smarthome-edge#readme",
   "node-red": {
     "nodes": {
-      "connected": "common/connected.js",
       "denon in": "denonavr/denonin.js",
       "denon out": "denonavr/denonout.js",
-      "denon mqtt": "denonavr/denon2mqtt.js",
-      "mqtt denon": "denonavr/mqtt2denon.js",
-      "fritzhosts mqtt": "fritzbox/fritzhosts2mqtt.js",
-      "philips req": "philipstv/philipsreq.js",
-      "philips mqtt": "philipstv/philips2mqtt.js"
+      "philips req": "philipstv/philipsreq.js"
     }
   },
   "dependencies": {

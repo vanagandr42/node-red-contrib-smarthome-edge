@@ -27,7 +27,7 @@ module.exports = function (RED) {
             }
         });
 
-        if (data.startsWith("PSMODE") || data.startsWith("PSMULTEQ")) {
+        if (data.startsWith("PSMODE") || data.startsWith("PSMULTEQ") || data.startsWith("PSSP")) {
             let parts = data.split(":");
             command += parts[0];
             parameter = parts[1];

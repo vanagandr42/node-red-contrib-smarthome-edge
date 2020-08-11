@@ -1,0 +1,11 @@
+{
+    "common": {
+        "label": {
+            "device": "Device"
+        },
+        "error": {
+            "invalidparameter": "invalid parameter",
+            "invalidcommand": "invalid command"
+        }
+    }
+}

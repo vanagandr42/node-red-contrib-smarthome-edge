@@ -1,6 +1,6 @@
 {
   "name": "@vanagandr42/node-red-contrib-smarthome-edge",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Several custom nodes to integrate smart home edge devices.",
   "repository": {
     "type": "git",
@@ -16,11 +16,15 @@
     "nodes": {
       "denon in": "denonavr/denonin.js",
       "denon out": "denonavr/denonout.js",
-      "philips req": "philipstv/philipsreq.js"
+      "philips req": "philipstv/philipsreq.js",
+      "xiaomifan in": "xiaomifan/xiaomifanin.js",
+      "xiaomifan out": "xiaomifan/xiaomifanout.js",
+      "xiaomifan device": "xiaomifan/xiaomifandevice.js"
     }
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "miio": "^0.15.6",
     "underscore": "^1.10.2"
   }
 }

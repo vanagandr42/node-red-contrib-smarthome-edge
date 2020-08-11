@@ -6,6 +6,7 @@
             "password": "Password"
         },
         "status": {
+            "requesting": "waiting for response",
             "no-response": "no response from server"
         },
         "errors": {

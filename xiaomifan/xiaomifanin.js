@@ -16,6 +16,7 @@ module.exports = function (RED) {
         this.on('input', function (msg, send, done) {
             let device = node.deviceNode.device;
             let payload = {
+                ts: Date.now(),
                 power: device.property('power'),
                 ac_power: device.property('ac_power'),
                 battery: device.property('battery'),

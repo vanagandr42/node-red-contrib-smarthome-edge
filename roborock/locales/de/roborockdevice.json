@@ -1,0 +1,9 @@
+{
+    "common": {
+        "label": {
+            "ip": "IP",
+            "token": "Token",
+            "interval": "Intervall (ms)"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "common": {
+        "label": {
+            "ip": "IP",
+            "key": "Key",
+            "sensorinterval": "Sync Intervall der Sensoren (ms)",
+            "lampfactor": "Sync Faktor der Lampen"
+        }
+    }
+}

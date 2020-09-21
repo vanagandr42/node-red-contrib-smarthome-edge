@@ -1,6 +1,6 @@
 {
   "name": "@vanagandr42/node-red-contrib-smarthome-edge",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Several custom nodes to integrate smart home edge devices.",
   "repository": {
     "type": "git",
@@ -17,6 +17,9 @@
       "denon in": "denonavr/denonin.js",
       "denon out": "denonavr/denonout.js",
       "philips req": "philipstv/philipsreq.js",
+      "philipshue in": "philipshue/philipshuein.js",
+      "philipshue out": "philipshue/philipshueout.js",
+      "philipshue device": "philipshue/philipshuebridge.js",
       "roborock in": "roborock/roborockin.js",
       "roborock out": "roborock/roborockout.js",
       "roborock device": "roborock/roborockdevice.js",
@@ -28,6 +31,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "miio": "^0.15.6",
+    "node-hue-api": "^4.0.9",
     "underscore": "^1.10.2"
   }
 }

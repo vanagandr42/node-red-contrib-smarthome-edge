@@ -1,0 +1,11 @@
+{
+    "common": {
+        "label": {
+            "bridge": "Bridge"
+        },
+        "errors": {
+            "invalidparameter": "ungültiger Parameter",
+            "invalidcommand": "ungültiger Befehl"
+        }
+    }
+}

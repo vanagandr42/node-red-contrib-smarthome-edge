@@ -1,0 +1,50 @@
+<script type="text/javascript">
+    RED.nodes.registerType('philipshue bridge', {
+        category: 'config',
+        defaults: {
+            bridgeName: { value: "" },
+            bridgeIP: { value: "", required: true },
+            bridgeKey: { value: "", required: true },
+            syncIntervalSensors: {
+                value: 3000,
+                required: true,
+                validate: function (v) {
+                    return (/^[0-9]+/.test(v) && parseInt(v, 10) >= 500 && parseInt(v, 10) <= 3000);
+                }
+            },
+            syncFactorLamps: {
+                value: 1,
+                required: true,
+                validate: function (v) {
+                    return (/^[0-9]+/.test(v) && parseInt(v, 10) >= 1 && parseInt(v, 10) <= 100);
+                }
+            }
+        },
+        label: function () {
+            return this.bridgeName || this.bridgeIP;
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="philipshue bridge">
+    <div class="form-row">
+        <label for="node-config-input-bridgeIP"><i class="fa fa-location-arrow"></i> <span data-i18n="common.label.ip"></span></label>
+        <input type="text" id="node-config-input-bridgeIP" data-i18n="[placeholder]common.label.ip">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-bridgeKey"><i class="fa fa-key"></i> <span data-i18n="common.label.key"></span></label>
+        <input type="text" id="node-config-input-bridgeKey" data-i18n="[placeholder]common.label.key">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-syncIntervalSensors"><i class="fa fa-clock-o"></i> <span data-i18n="common.label.sensorinterval"></span></label>
+        <input type="text" id="node-config-input-syncIntervalSensors" placeholder="3000">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-syncFactorLamps"><i class="fa fa-clock-o"></i> <span data-i18n="common.label.lampfactor"></span></label>
+        <input type="text" id="node-config-input-syncFactorLamps" placeholder="1">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-bridgeName"><i class="fa fa-tag"></i> <span data-i18n="node-red:common.label.name"></span></label>
+        <input type="text" id="node-config-input-bridgeName" data-i18n="[placeholder]node-red:common.label.name">
+    </div>
+</script>

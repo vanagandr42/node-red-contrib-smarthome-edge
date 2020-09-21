@@ -1,0 +1,9 @@
+{
+    "common": {
+        "label": {
+            "bridge": "Bridge",
+            "onlychanges": "Only changes",
+            "onlychanges-info": "Only send message if device state has changed."
+        }
+    }
+}

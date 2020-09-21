@@ -14,7 +14,7 @@ module.exports = function (RED) {
             let device = node.deviceNode.device;
             if (!device) {
                 err = RED._('miio.errors.nodevice');
-                node.status({ fill: 'red', shape: 'ring', text: 'common.status.no-response' });
+                node.status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
             }
 
             let command = msg.payload.command || '';

@@ -2,10 +2,6 @@
     "common": {
         "label": {
             "device": "Gerät"
-        },
-        "errors": {
-            "invalidparameter": "ungültiger Parameter",
-            "invalidcommand": "ungültiger Befehl"
         }
     }
 }

@@ -1,7 +1,7 @@
 {
     "common": {
         "label": {
-            "Bridge": "Bridge",
+            "bridge": "Bridge",
             "onlychanges": "Nur Änderungen",
             "onlychanges-info": "Sende nur eine Message, wenn sich der Gerätezustand geändert hat"
         }

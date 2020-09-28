@@ -1,0 +1,7 @@
+{
+    "common": {
+        "label": {
+            "timeout": "Timeout for discovery"
+        }
+    }
+}

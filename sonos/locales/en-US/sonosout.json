@@ -1,0 +1,24 @@
+{
+    "common": {
+        "label": {
+            "config": "Configuration"
+        },
+        "errors": {
+            "invalidparameter": "invalid parameter",
+            "invalidcommand": "invalid command"
+        }
+    },
+    "sonos": {
+        "errors": {
+            "nomanager": "sonos manager is undefined",
+            "nodevices": "no device could be found",
+            "toomanydevices": "only single device allowed for this command"
+        },
+        "warnings": {
+            "nodevice": "no device could be found",
+            "devicealreadyjoined": "device is already part of the group",
+            "devicealreadyplaying": "device is already playing",
+            "devicealreadycoordinator": "device is already the group coordinator"
+        }
+    }
+}

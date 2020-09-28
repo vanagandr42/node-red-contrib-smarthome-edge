@@ -1,6 +1,6 @@
 {
   "name": "@vanagandr42/node-red-contrib-smarthome-edge",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Several custom nodes to integrate smart home edge devices.",
   "repository": {
     "type": "git",
@@ -19,10 +19,13 @@
       "philips req": "philipstv/philipsreq.js",
       "philipshue in": "philipshue/philipshuein.js",
       "philipshue out": "philipshue/philipshueout.js",
-      "philipshue device": "philipshue/philipshuebridge.js",
+      "philipshue bridge": "philipshue/philipshuebridge.js",
       "roborock in": "roborock/roborockin.js",
       "roborock out": "roborock/roborockout.js",
       "roborock device": "roborock/roborockdevice.js",
+      "sonos in": "sonos/sonosin.js",
+      "sonos out": "sonos/sonosout.js",
+      "sonos config": "sonos/sonosconfig.js",
       "xiaomifan in": "xiaomifan/xiaomifanin.js",
       "xiaomifan out": "xiaomifan/xiaomifanout.js",
       "xiaomifan device": "xiaomifan/xiaomifandevice.js"
@@ -30,8 +33,10 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "html-entities": "^1.3.1",
     "miio": "^0.15.6",
     "node-hue-api": "^4.0.9",
-    "underscore": "^1.10.2"
+    "underscore": "^1.10.2",
+    "@svrooij/sonos": "^2.1.0"
   }
 }

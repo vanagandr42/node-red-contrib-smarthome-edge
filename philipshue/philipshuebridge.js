@@ -27,19 +27,19 @@ module.exports = function (RED) {
         this.createBridgeApi = function () {
             hueapi.api.createLocal(config.bridgeIP).connect(config.bridgeKey)
                 .then(api => {
-                    this.bridge = api;
-                    for (let user in this.users) {
-                        this.users[user].status({});
+                    node.bridge = api;
+                    for (let user in node.users) {
+                        node.users[user].status({});
                     }
                 })
                 .catch(err => {
                     node.error(err);
-                    for (let user in this.users) {
-                        this.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
+                    for (let user in node.users) {
+                        node.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
                     }
-                    if (!this.closing) {
-                        this.timeout_id = setTimeout(function () {
-                            this.createBridgeApi();
+                    if (!node.closing) {
+                        node.timeout_id = setTimeout(function () {
+                            node.createBridgeApi();
                         }, 10000);
                     }
                 });
@@ -133,8 +133,8 @@ module.exports = function (RED) {
                     });
             }
             else {
-                for (let user in this.users) {
-                    this.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
+                for (let user in node.users) {
+                    node.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
                 }
             }
         }

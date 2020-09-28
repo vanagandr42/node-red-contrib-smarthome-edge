@@ -18,22 +18,22 @@ module.exports = function (RED) {
         this.createMiioDevice = function () {
             miio.device({ address: config.deviceIP, token: config.deviceToken })
                 .then(device => {
-                    this.device = device;
-                    this.device.updatePollDuration(Math.pow(2, 31) - 1);
-                    this.device.updateMaxPollFailures(-1);
-                    this.device.poll(true);
-                    for (let user in this.users) {
-                        this.users[user].status({});
+                    node.device = device;
+                    node.device.updatePollDuration(Math.pow(2, 31) - 1);
+                    node.device.updateMaxPollFailures(-1);
+                    node.device.poll(true);
+                    for (let user in node.users) {
+                        node.users[user].status({});
                     }
                 })
                 .catch(err => {
                     node.error(err);
-                    for (let user in this.users) {
-                        this.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
+                    for (let user in node.users) {
+                        node.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
                     }
-                    if (!this.closing) {
-                        this.timeout_id = setTimeout(function () {
-                            this.createMiioDevice();
+                    if (!node.closing) {
+                        node.timeout_id = setTimeout(function () {
+                            node.createMiioDevice();
                         }, 10000);
                     }
                 });
@@ -87,8 +87,8 @@ module.exports = function (RED) {
                     });
             }
             else {
-                for (let user in this.users) {
-                    this.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
+                for (let user in node.users) {
+                    node.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
                 }
             }
         }

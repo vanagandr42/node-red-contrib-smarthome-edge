@@ -18,37 +18,37 @@ module.exports = function (RED) {
         this.createMiioDevice = function () {
             miio.device({ address: config.deviceIP, token: config.deviceToken })
                 .then(device => {
-                    this.device = device;
-                    this.device.updatePollDuration(Math.pow(2, 31) - 1);
-                    this.device.updateMaxPollFailures(-1);
-                    this.device.defineProperty('power');
-                    this.device.defineProperty('ac_power');
-                    this.device.defineProperty('battery');
-                    this.device.defineProperty('angle_enable');
-                    this.device.defineProperty('angle');
-                    this.device.defineProperty('speed_level');
-                    this.device.defineProperty('natural_level');
-                    this.device.defineProperty('temp_dec');
-                    this.device.defineProperty('humidity');
-                    this.device.defineProperty('buzzer');
-                    this.device.defineProperty('child_lock');
-                    this.device.defineProperty('led_b');
-                    this.device.defineProperty('poweroff_time');
-                    this.device.defineProperty('use_time');
-                    this.device.defineProperty('speed');
-                    this.device.poll(true);
-                    for (let user in this.users) {
-                        this.users[user].status({});
+                    node.device = device;
+                    node.device.updatePollDuration(Math.pow(2, 31) - 1);
+                    node.device.updateMaxPollFailures(-1);
+                    node.device.defineProperty('power');
+                    node.device.defineProperty('ac_power');
+                    node.device.defineProperty('battery');
+                    node.device.defineProperty('angle_enable');
+                    node.device.defineProperty('angle');
+                    node.device.defineProperty('speed_level');
+                    node.device.defineProperty('natural_level');
+                    node.device.defineProperty('temp_dec');
+                    node.device.defineProperty('humidity');
+                    node.device.defineProperty('buzzer');
+                    node.device.defineProperty('child_lock');
+                    node.device.defineProperty('led_b');
+                    node.device.defineProperty('poweroff_time');
+                    node.device.defineProperty('use_time');
+                    node.device.defineProperty('speed');
+                    node.device.poll(true);
+                    for (let user in node.users) {
+                        node.users[user].status({});
                     }
                 })
                 .catch(err => {
                     node.error(err);
-                    for (let user in this.users) {
-                        this.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
+                    for (let user in node.users) {
+                        node.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
                     }
-                    if (!this.closing) {
-                        this.timeout_id = setTimeout(function () {
-                            this.createMiioDevice();
+                    if (!node.closing) {
+                        node.timeout_id = setTimeout(function () {
+                            node.createMiioDevice();
                         }, 10000);
                     }
                 });
@@ -89,8 +89,8 @@ module.exports = function (RED) {
                     });
             }
             else {
-                for (let user in this.users) {
-                    this.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
+                for (let user in node.users) {
+                    node.users[user].status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
                 }
             }
         }

@@ -126,7 +126,7 @@ module.exports = function (RED) {
 
         this.on('close', function (done) {
             node.doneClose = done;
-            this.closing = true;
+            node.closing = true;
             if (client) { client.destroy(); }
             clearTimeout(reconnectTimeout);
             if (!node.connected) { done(); }

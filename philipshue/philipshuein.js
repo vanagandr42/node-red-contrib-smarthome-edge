@@ -136,7 +136,7 @@ module.exports = function (RED) {
 
                         let msg = { payload: { id: id, type: 'switch', ts: timestamp, state: state, info: info, capabilities: sensor.capabilities, bridge: bridge } };
 
-                        let uniqueStatus = timestamp;
+                        let uniqueStatus = timestamp + sensor.buttonevent;
                         if (id in node.lastSensorStatus) {
                             if (node.lastSensorStatus[id] !== uniqueStatus) {
                                 node.lastSensorStatus[id] = uniqueStatus;

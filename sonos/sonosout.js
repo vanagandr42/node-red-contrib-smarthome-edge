@@ -1,20 +1,6 @@
 module.exports = function (RED) {
     'use strict';
 
-    function getMethods(obj) {
-        var result = [];
-        for (var id in obj) {
-            try {
-                if (typeof (obj[id]) == "function") {
-                    result.push(id + ": " + obj[id].toString());
-                }
-            } catch (err) {
-                result.push(id + ": inaccessible");
-            }
-        }
-        return result;
-    }
-
     function SonosOut(config) {
         RED.nodes.createNode(this, config);
 
@@ -62,10 +48,17 @@ module.exports = function (RED) {
                         }
                         break;
                     case 'pause':
-                        promises.push(devices.filter(device => device.Coordinator.Uuid === device.Uuid).map(device => device.Pause()));
+                        promises.push(devices
+                            .map(device => device.Coordinator)
+                            .filter((device, index, self) => self.indexOf(device) === index)
+                            .filter(device => device.CurrentTransportState === 'PLAYING')
+                            .map(device => device.Pause()));
                         break;
                     case 'stop':
-                        promises.push(devices.filter(device => device.Coordinator.Uuid === device.Uuid).map(device => device.Stop()));
+                        promises.push(devices
+                            .map(device => device.Coordinator)
+                            .filter((device, index, self) => self.indexOf(device) === index)
+                            .map(device => device.Stop()));
                         break;
                     case 'next':
                         if (devices.length !== 1) {
@@ -201,8 +194,7 @@ module.exports = function (RED) {
                             err = RED._('sonos.errors.toomanydevices');
                         }
                         else if (typeof parameter === 'string') {
-                            let coordinator = devices[0].Coordinator;
-                            promises.push(coordinator.SetAVTransportURI(parameter).then(() => coordinator.Play()));
+                            promises.push(devices[0].Coordinator.SetAVTransportURI(parameter).then(() => coordinator.Play()));
                         }
                         else {
                             err = RED._('common.errors.invalidparameter');
@@ -210,7 +202,10 @@ module.exports = function (RED) {
                         break;
                     case 'play_notification':
                         if (typeof parameter === 'string') {
-                            promises.push(devices.filter(device => device.Coordinator.Uuid === device.Uuid).map(device => device.PlayNotification({ trackUri: parameter, onlyWhenPlaying: false })));
+                            promises.push(devices
+                                .map(device => device.Coordinator)
+                                .filter((device, index, self) => self.indexOf(device) === index)
+                                .map(device => device.PlayNotification({ trackUri: parameter, onlyWhenPlaying: false })));
                         }
                         else {
                             err = RED._('common.errors.invalidparameter');

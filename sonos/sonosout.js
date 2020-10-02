@@ -168,24 +168,45 @@ module.exports = function (RED) {
                                 warn = RED._('sonos.warnings.nodevice');
                             }
                             else {
-                                promises.push(devices[0].AVTransportService.SetAVTransportURI({ InstanceID: 0, CurrentURI: `x-rincon:${deviceToJoin.Coordinator.Uuid}`, CurrentURIMetaData: '' }));
+                                promises.push(devices[0].AVTransportService.SetAVTransportURI({ InstanceID: 0, CurrentURI: `x-rincon:${deviceToJoin.Uuid}`, CurrentURIMetaData: '' }));
                             }
                         }
                         break;
                     case 'leave_group':
                         promises.push(devices.map(device => device.AVTransportService.BecomeCoordinatorOfStandaloneGroup()));
                         break;
-                    case 'change_coordinator':
+                    case 'others_leave_group':
                         if (devices.length !== 1) {
                             err = RED._('sonos.errors.toomanydevices');
                         }
                         else {
-                            let coordinator = devices[0].Coordinator;
-                            if (devices[0].Uuid === coordinator.Uuid) {
-                                warn = RED._('sonos.warnings.devicealreadycoordinator');
+                            let leaveDevices = manager.Devices.filter(device => device.Coordinator.Uuid === devices[0].Coordinator.Uuid && device.Uuid !== devices[0].Uuid);
+                            if (devices[0].Uuid === devices[0].Coordinator.Uuid) {
+                                promises.push(leaveDevices.map(device => device.AVTransportService.BecomeCoordinatorOfStandaloneGroup()));
                             }
                             else {
-                                promises.push(coordinator.AVTransportService.DelegateGroupCoordinationTo({ InstanceID: 0, NewCoordinator: devices[0].Uuid, RejoinGroup: true }));
+                                if (leaveDevices.length > 0) {
+                                    promises.push(devices[0].Coordinator.AVTransportService.DelegateGroupCoordinationTo({ InstanceID: 0, NewCoordinator: devices[0].Uuid, RejoinGroup: true })
+                                        .then(() => Promise.all(leaveDevices.map(device => device.AVTransportService.BecomeCoordinatorOfStandaloneGroup()))));
+                                }
+                            }
+                        }
+                        break;
+                    case 'take_over':
+                        if (devices.length !== 1) {
+                            err = RED._('sonos.errors.toomanydevices');
+                        }
+                        else if (devices[0].Coordinator.CurrentTransportState === 'PLAYING') {
+                            warn = RED._('sonos.warnings.devicealreadyplaying');
+                        }
+                        else {
+                            let deviceToTakeOver = manager.Devices.find(device => device.Uuid === device.Coordinator.Uuid && device.CurrentTransportState === 'PLAYING');
+                            if (typeof deviceToTakeOver === 'undefined') {
+                                warn = RED._('sonos.warnings.nodevice');
+                            }
+                            else {
+                                promises.push(devices[0].AVTransportService.BecomeCoordinatorOfStandaloneGroup()
+                                    .then(() => deviceToTakeOver.AVTransportService.DelegateGroupCoordinationTo({ InstanceID: 0, NewCoordinator: devices[0].Uuid, RejoinGroup: true })));
                             }
                         }
                         break;
@@ -209,6 +230,74 @@ module.exports = function (RED) {
                         }
                         else {
                             err = RED._('common.errors.invalidparameter');
+                        }
+                        break;
+                    case 'toggle_or_take_over':
+                        if (devices.length !== 1) {
+                            err = RED._('sonos.errors.toomanydevices');
+                        }
+                        else {
+                            // if device/group is playing
+                            if (devices[0].Coordinator.CurrentTransportState === 'PLAYING') {
+                                // stop playback for device/group
+                                promises.push(devices[0].Coordinator.Stop());
+                            }
+                            // if device/group is stopped
+                            else {
+                                // if another device/group is playing
+                                let coordinatorPlaying = manager.Devices.find(device => device.Uuid === device.Coordinator.Uuid && device.CurrentTransportState === 'PLAYING');
+                                if (typeof coordinatorPlaying !== 'undefined') {
+                                    // take over playback
+                                    promises.push(coordinatorPlaying.AVTransportService.DelegateGroupCoordinationTo({ InstanceID: 0, NewCoordinator: devices[0].Uuid, RejoinGroup: true }));
+                                }
+                                // if no device/group is playing
+                                else {
+                                    // start playback for device/group
+                                    promises.push(devices[0].Coordinator.Play());
+                                }
+                            }
+                        }
+                        break;
+                    case 'join_or_leave_group':
+                        if (devices.length !== 1) {
+                            err = RED._('sonos.errors.toomanydevices');
+                        }
+                        else {
+                            if (devices[0].Coordinator.CurrentTransportState === 'PLAYING') {
+                                // if device is playing
+                                if (manager.Devices.filter(device => device.Coordinator.Uuid === devices[0].Coordinator.Uuid).length === 1) {
+                                    // stop playback for device
+                                    promises.push(devices[0].Coordinator.Stop());
+                                }
+                                // if group is playing
+                                else {
+                                    // leave the group
+                                    promises.push(devices.map(device => device.AVTransportService.BecomeCoordinatorOfStandaloneGroup()));
+                                }
+                            }
+                            // if device/group is stopped
+                            else {
+                                // if another device/group is playing
+                                let coordinatorPlaying = manager.Devices.find(device => device.Uuid === device.Coordinator.Uuid && device.CurrentTransportState === 'PLAYING');
+                                if (typeof coordinatorPlaying !== 'undefined') {
+                                    // join this group
+                                    promises.push(devices[0].AVTransportService.SetAVTransportURI({ InstanceID: 0, CurrentURI: `x-rincon:${coordinatorPlaying.Uuid}`, CurrentURIMetaData: '' }));
+                                }
+                                // if no device/group is playing
+                                else {
+                                    // continue last played playlist
+                                    let lastPlayingDevice = manager.Devices.find(device => device.Uuid === node.deviceNode.lastPlayingDeviceUuid);
+                                    if (typeof lastPlayingDevice !== 'undefined') {
+                                        if (devices[0].Coordinator.Uuid === lastPlayingDevice.Coordinator.Uuid) {
+                                            promises.push(devices[0].Coordinator.Play());
+                                        }
+                                        else {
+                                            promises.push(lastPlayingDevice.Coordinator.AVTransportService.DelegateGroupCoordinationTo({ InstanceID: 0, NewCoordinator: devices[0].Coordinator.Uuid, RejoinGroup: true })
+                                                .then(() => devices[0].Coordinator.Play()));
+                                        }
+                                    }
+                                }
+                            }
                         }
                         break;
                     default:

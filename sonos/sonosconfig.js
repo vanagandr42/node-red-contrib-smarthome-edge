@@ -3,7 +3,6 @@ module.exports = function (RED) {
 
     const SonosManager = require('@svrooij/sonos').SonosManager;
     const SonosEvents = require('@svrooij/sonos').SonosEvents;
-    const ServiceEvents = require('@svrooij/sonos').ServiceEvents;
 
     function SonosConfigNode(config) {
         RED.nodes.createNode(this, config);
@@ -16,6 +15,7 @@ module.exports = function (RED) {
         var node = this;
 
         this.manager = new SonosManager();
+        this.lastPlayingDeviceUuid;
 
         this.createSonosApi = function () {
             node.manager.InitializeWithDiscovery()
@@ -95,6 +95,10 @@ module.exports = function (RED) {
             })
 
             device.Events.on(SonosEvents.AVTransport, data => {
+                if (data.TransportState === 'PLAYING' && device.Coordinator.Uuid === device.Uuid) {
+                    node.lastPlayingDeviceUuid = device.Uuid;
+                }
+
                 for (let user in node.users) {
                     node.users[user].emit('input', { device: device, avtransport: data });
                 }

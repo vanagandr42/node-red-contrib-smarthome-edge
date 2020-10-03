@@ -40,10 +40,13 @@ module.exports = function (RED) {
                 node.status({ fill: 'blue', shape: 'dot', text: 'common.status.requesting' });
 
                 let data;
-                if (command === 'PSMODE' || command === 'PSMULTEQ') {
+                if (['PSMODE', 'PSMULTEQ', 'PSFH', 'PSSP'].includes(command)) {
                     data = command + ':' + parameter;
                 }
-                else if (command.startsWith('PS') || command.startsWith('CV') || command.startsWith('SS') || command.startsWith('MVMAX')) {
+                else if ( ['PS', 'CV', 'SS', 'MVMAX', 'VSAUDIO', 'VSVST'].map(value => command.startsWith(value)).some(value => value === true)) {
+                    data = command + ' ' + parameter;
+                }
+                else if ( ['PV'].map(value => command.startsWith(value) && command !== value).some(value => value === true)) {
                     data = command + ' ' + parameter;
                 }
                 else {

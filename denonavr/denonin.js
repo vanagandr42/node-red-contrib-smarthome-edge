@@ -7,38 +7,66 @@ module.exports = function (RED) {
     var connectionPool = {};
 
     function parseTcpData(data) {
-        var command = "";
-        var parameter = "";
+        var command = '';
+        var parameter = '';
 
-        if (data.startsWith("Z2")) {
-            command = "Z2";
-            data = data.substring(2);
-        }
-        else if (data.startsWith("Z3")) {
-            command = "Z3";
-            data = data.substring(2);
+        if (['Z2', 'Z3'].map(value => data.startsWith(value)).some(value => value === true) && !['ON', 'OFF'].includes(data.substring(2))) {
+            return { command: command, parameter: parameter };
         }
 
-        ["SLP", "NSA", "NSE"].forEach(function (item, index) {
-            if (data.startsWith(item)) {
-                command += item;
-                parameter = data.substring(3);
-                return { command: command, parameter: parameter };
-            }
-        });
+        if (['VIALL', 'SY'].map(value => data.startsWith(value)).some(value => value === true)) {
+            return { command: command, parameter: parameter };
+        }
 
-        if (data.startsWith("PSMODE") || data.startsWith("PSMULTEQ") || data.startsWith("PSSP")) {
-            let parts = data.split(":");
+        if (['CVEND'].includes(data)) {
+            return { command: command, parameter: parameter };
+        }
+
+        if (['VSMONI'].map(value => data.startsWith(value)).some(value => value === true)) {
+            command += data.substring(0, 6);
+            parameter = data.substring(6);
+            return { command: command, parameter: parameter };
+        }
+
+        if (['VSASP', 'VSSCH', 'VSVPM'].map(value => data.startsWith(value)).some(value => value === true)) {
+            command += data.substring(0, 5);
+            parameter = data.substring(5);
+            return { command: command, parameter: parameter };
+        }
+
+        if (['VSSC'].map(value => data.startsWith(value)).some(value => value === true)) {
+            command += data.substring(0, 4);
+            parameter = data.substring(4);
+            return { command: command, parameter: parameter };
+        }
+
+        if (['SLP', 'NSA', 'NSE'].map(value => data.startsWith(value)).some(value => value === true)) {
+            command += data.substring(0, 3);
+            parameter = data.substring(3);
+            return { command: command, parameter: parameter };
+        }
+
+        if (['PSMODE', 'PSMULTEQ', 'PSFH', 'PSSP'].map(value => data.startsWith(value)).some(value => value === true)) {
+            let parts = data.split(':');
             command += parts[0];
             parameter = parts[1];
             return { command: command, parameter: parameter };
         }
 
-        if (data.startsWith("PS") || data.startsWith("CV") || data.startsWith("SS") || data.startsWith("MVMAX")) {
-            let parts = data.split(" ");
+        if (['PS', 'CV', 'SS', 'MVMAX', 'VSAUDIO', 'VSVST'].map(value => data.startsWith(value)).some(value => value === true)) {
+            let parts = data.split(' ');
             command += parts[0];
-            parameter = parts.slice(1).join(" ");
+            parameter = parts.slice(1).join(' ');
             return { command: command, parameter: parameter };
+        }
+
+        if (['PV'].map(value => data.startsWith(value)).some(value => value === true)) {
+            let parts = data.split(' ');
+            if (parts.length > 1) {
+                command += parts[0];
+                parameter = parts.slice(1).join(' ');
+                return { command: command, parameter: parameter };
+            }
         }
 
         command += data.substring(0, 2);
@@ -80,23 +108,32 @@ module.exports = function (RED) {
                 var msg;
                 var parts = buffer.split("\r");
                 for (var i = 0; i < parts.length - 1; i += 1) {
-                    msg = { payload: parseTcpData(parts[i]) };
-                    msg.payload.ts = Date.now();
-                    msg.device = { host: node.host, port: node.port };
-                    msg._session = { type: "tcp", id: id };
-                    node.send(msg);
+                    let payload = parseTcpData(parts[i]);
+                    if (payload.command.length > 0) {
+                        msg = { payload: payload };
+                        msg.payload.ts = Date.now();
+                        msg.device = { host: node.host, port: node.port };
+                        msg._session = { type: "tcp", id: id };
+                        node.send(msg);
+                    }
                 }
                 buffer = parts[parts.length - 1];
             });
             client.on('end', function () {
                 if (buffer.length > 0) {
-                    var msg = { payload: parseTcpData(buffer) };
-                    msg.payload.ts = Date.now();
-                    msg.device = { host: node.host, port: node.port };
-                    msg._session = { type: "tcp", id: id };
+                    let payload = parseTcpData(buffer);
+                    let msg;
+                    if (payload.command.length > 0) {
+                        msg = { payload: payload };
+                        msg.payload.ts = Date.now();
+                        msg.device = { host: node.host, port: node.port };
+                        msg._session = { type: "tcp", id: id };
+                    }
 
                     end = true; // only ask for fast re-connect if we actually got something
-                    node.send(msg);
+                    if (typeof msg != 'undefined') {
+                        node.send(msg);
+                    }
 
                     buffer = null;
                 }

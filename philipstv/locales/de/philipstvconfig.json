@@ -1,0 +1,14 @@
+{
+    "common": {
+        "label": {
+            "name": "Name",
+            "username": "Benutzername",
+            "password": "Passwort",
+            "server": "Server",
+            "port": "Port",
+            "host": "Host",
+            "apiv": "API-Version",
+            "syncinterval": "Sync Intervall (ms)"
+        }
+    }
+}

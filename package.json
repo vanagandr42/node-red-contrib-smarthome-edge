@@ -1,6 +1,6 @@
 {
   "name": "@vanagandr42/node-red-contrib-smarthome-edge",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Several custom nodes to integrate smart home edge devices.",
   "repository": {
     "type": "git",
@@ -16,7 +16,9 @@
     "nodes": {
       "denon in": "denonavr/denonin.js",
       "denon out": "denonavr/denonout.js",
-      "philips req": "philipstv/philipsreq.js",
+      "philipstv in": "philipstv/philipstvin.js",
+      "philipstv out": "philipstv/philipstvout.js",
+      "philipstv config": "philipstv/philipstvconfig.js",
       "philipshue in": "philipshue/philipshuein.js",
       "philipshue out": "philipshue/philipshueout.js",
       "philipshue bridge": "philipshue/philipshuebridge.js",

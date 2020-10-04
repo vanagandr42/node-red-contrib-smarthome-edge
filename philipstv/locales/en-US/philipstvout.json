@@ -1,0 +1,10 @@
+{
+    "common": {
+        "label": {
+            "config": "Configuration"
+        },
+        "errors": {
+            "invalidcommand": "invalid command"
+        }
+    }
+}

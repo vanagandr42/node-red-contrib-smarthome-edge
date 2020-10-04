@@ -1,0 +1,18 @@
+{
+    "common": {
+        "label": {
+            "name": "Name",
+            "username": "Username",
+            "password": "Password",
+            "server": "Server",
+            "port": "port",
+            "host": "host",
+            "apiv": "API version",
+            "syncinterval": "Sync interval (ms)"
+        },
+        "errors": {
+            "notjson": "message bode must be in JSON format",
+            "invalidmethod": "method in message is invalid"
+        }
+    }
+}

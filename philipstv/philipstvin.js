@@ -14,7 +14,10 @@ module.exports = function (RED) {
         }
 
         this.on('input', function (msg, send, done) {
+            let timestamp = Date.now();
+            
             msg.periodical = true;
+            msg.payload.ts = timestamp
 
             // For maximum backwards compatibility, check that send exists.
             // If this node is installed in Node-RED 0.x, it will need to

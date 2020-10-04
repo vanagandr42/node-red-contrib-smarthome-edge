@@ -30,8 +30,10 @@ module.exports = function (RED) {
 
                 node.configNode.request(payload.method, payload.path, payload.body)
                     .then(response => {
+                        let timestamp = Date.now();
                         let msg = { payload: payload };
                         msg.payload.result = response.data;
+                        msg.payload.ts = timestamp;
 
                         node.status({});
 

@@ -15,7 +15,7 @@ module.exports = function (RED) {
 
         this.on('input', function (msg, send, done) {
             let timestamp = Date.now();
-            
+
             msg.periodical = true;
             msg.payload.ts = timestamp
 

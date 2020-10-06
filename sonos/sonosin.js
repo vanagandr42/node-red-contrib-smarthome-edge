@@ -31,13 +31,7 @@ module.exports = function (RED) {
             }
             let group = { name: mdevice.GroupName, isCoordinator: isCoordinator, coordinator: mdevice.Coordinator.Uuid };
 
-            let transport = {};
-            if (isCoordinator) {
-                transport.transportState = mdevice.CurrentTransportState;
-            }
-            else {
-                transport.transportState = 'COORDINATOR';
-            }
+            let transport = { transportState: mdevice.Coordinator.CurrentTransportState };
             if (typeof mdevice.volume !== 'undefined') {
                 transport.volume = mdevice.Volume;
             }

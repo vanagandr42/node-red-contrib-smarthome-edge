@@ -28,26 +28,48 @@ module.exports = function (RED) {
             else {
                 node.status({ fill: 'blue', shape: 'dot', text: 'node-red:common.status.connecting' });
 
-                node.configNode.request(payload.method, payload.path, payload.body)
-                    .then(response => {
-                        let timestamp = Date.now();
-                        let msg = { payload: payload };
-                        msg.payload.result = response.data;
-                        msg.payload.ts = timestamp;
-
-                        node.status({});
-
-                        // For maximum backwards compatibility, check that send exists.
-                        // If this node is installed in Node-RED 0.x, it will need to
-                        // fallback to using `node.send`
-                        send = send || function () { node.send.apply(node, arguments) };
-                        send(msg);
-
-                        if (done) {
-                            done();
+                async function asyncCall() {
+                    try {
+                        let validState = true;
+                        if (payload.path === 'menuitems/settings/update') {
+                            let powerResponse = await node.configNode.request('get', 'powerstate', undefined);
+                            if (powerResponse.data.powerstate === 'On') {
+                                validState = true;
+                            }
+                            else {
+                                validState = false;
+                            }
                         }
-                    })
-                    .catch(error => {
+
+                        if (validState) {
+                            let response = await node.configNode.request(payload.method, payload.path, payload.body);
+                            let timestamp = Date.now();
+                            let msg = { payload: payload };
+                            msg.payload.result = response.data;
+                            msg.payload.ts = timestamp;
+
+                            node.status({});
+
+                            // For maximum backwards compatibility, check that send exists.
+                            // If this node is installed in Node-RED 0.x, it will need to
+                            // fallback to using `node.send`
+                            send = send || function () { node.send.apply(node, arguments) };
+                            send(msg);
+
+                            if (done) {
+                                done();
+                            }
+                        }
+                        else {
+                            node.warn(RED._('philipstv.warnings.invalidstate'), msg);
+                            node.status({});
+                            
+                            if (done) {
+                                done();
+                            }
+                        }
+                    }
+                    catch (error) {
                         if (error.code === 'ETIMEDOUT' || error.code === 'ESOCKETTIMEDOUT') {
                             node.status({ fill: 'red', shape: 'ring', text: 'node-red:common.status.disconnected' });
                         }
@@ -65,7 +87,9 @@ module.exports = function (RED) {
                             // Node-RED 0.x compatible
                             node.error(error, msg);
                         }
-                    });
+                    }
+                }
+                asyncCall();
             }
         });
 

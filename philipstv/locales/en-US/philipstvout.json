@@ -6,5 +6,10 @@
         "errors": {
             "invalidcommand": "invalid command"
         }
+    },
+    "philipstv": {
+        "warnings": {
+            "invalidstate": "command cannot be sent if tv is off"
+        }
     }
 }

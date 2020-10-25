@@ -9,7 +9,7 @@
     },
     "philipstv": {
         "warnings": {
-            "invalidstate": "command cannot be sent if tv is off"
+            "invalidstate": "command cannot be sent if tv is in this powerstate"
         }
     }
 }

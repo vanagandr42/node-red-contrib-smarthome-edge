@@ -40,6 +40,20 @@ module.exports = function (RED) {
                                 validState = false;
                             }
                         }
+                        else if (payload.path === 'input/key' && typeof payload.body != 'undefined' && (payload.body.key === 'On' || payload.body.key === 'Off')) {
+                            let powerResponse = await node.configNode.request('get', 'powerstate', undefined);
+                            if (powerResponse.data.powerstate === 'On' && payload.body.key === 'Off') {
+                                payload.body.key = 'Standby';
+                                validState = true;
+                            }
+                            else if (powerResponse.data.powerstate === 'Standby' && payload.body.key === 'On') {
+                                payload.body.key = 'Standby';
+                                validState = true;
+                            }
+                            else {
+                                validState = false;
+                            }
+                        }
 
                         if (validState) {
                             let response = await node.configNode.request(payload.method, payload.path, payload.body);
@@ -63,7 +77,7 @@ module.exports = function (RED) {
                         else {
                             node.warn(RED._('philipstv.warnings.invalidstate'), msg);
                             node.status({});
-                            
+
                             if (done) {
                                 done();
                             }
